@@ -1,414 +1,593 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WA Ultimate Suite - Solusi Profesional</title>
+    <title>WA Ultimate Suite - MAX LEVEL</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --accent-green: #22c55e;
-            --card-bg: rgba(30, 41, 59, 0.7);
+            --bg-base: #020617;
+            --accent-glow: rgba(34, 197, 94, 0.4);
+            --card-glass: rgba(15, 23, 42, 0.6);
+            --border-glass: rgba(255, 255, 255, 0.08);
         }
 
-        body {
-            background-color: var(--bg-dark);
+        * {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #f1f5f9;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(34, 197, 94, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(34, 197, 94, 0.05) 0%, transparent 20%);
-            background-attachment: fixed;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        /* Animated Gradient Background */
+        body {
+            background-color: var(--bg-base);
+            color: #f8fafc;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        .nav-btn {
-            position: relative;
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(16, 185, 129, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.15), transparent 25%);
+            animation: breathe 10s alternate infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(34, 197, 94, 0.5); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(34, 197, 94, 0.8); }
+
+        /* Form Inputs */
+        .premium-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .nav-btn.active {
-            color: var(--accent-green);
+        .premium-input:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: #22c55e;
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+            outline: none;
         }
 
-        .nav-btn.active::after {
+        /* Buttons */
+        .btn-glow {
+            position: relative;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn-glow::before {
             content: '';
             position: absolute;
-            bottom: -2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 3px;
-            background: var(--accent-green);
-            border-radius: 99px;
-            box-shadow: 0 0 10px var(--accent-green);
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.5s ease;
+            z-index: -1;
         }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.3);
-        }
-
-        .btn-primary:hover {
+        .btn-glow:hover {
             transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(34, 197, 94, 0.4);
-            filter: brightness(1.1);
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.5);
         }
+        .btn-glow:hover::before { left: 100%; }
+        .btn-glow:active { transform: translateY(1px); }
 
-        .custom-input {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.2s ease;
-        }
-
-        .custom-input:focus {
-            border-color: var(--accent-green);
-            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
-            background: rgba(15, 23, 42, 0.8);
-        }
-
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { 
-            background: rgba(255, 255, 255, 0.1); 
-            border-radius: 10px; 
-        }
-
-        @keyframes slideUp {
+        /* Animations */
+        @keyframes floatUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .animate-float { animation: floatUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
 
-        .animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            70% { transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .animate-pop { animation: popIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+        /* Loader Spinner */
+        .loader {
+            border: 2px solid rgba(255,255,255,0.2);
+            border-left-color: #ffffff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Startup Screen */
+        #startupScreen {
+            position: fixed; inset: 0; z-index: 9999;
+            background: var(--bg-base);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-4 md:p-8">
+<body class="antialiased selection:bg-green-500/30 selection:text-green-200">
 
-    <div class="w-full max-w-2xl">
-        <!-- Header Section -->
-        <header class="mb-10 text-center animate-slide-up">
-            <div class="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 px-4 py-1.5 rounded-full mb-4">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-                <span class="text-green-400 text-[10px] font-extrabold uppercase tracking-[0.2em]">Enterprise Edition 4.0</span>
+    <!-- Background Mesh -->
+    <div class="bg-mesh"></div>
+
+    <!-- Startup Screen -->
+    <div id="startupScreen">
+        <div class="relative">
+            <div class="absolute inset-0 bg-green-500 blur-3xl opacity-20 animate-pulse rounded-full"></div>
+            <svg class="w-20 h-20 text-green-500 relative z-10 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+        </div>
+        <h1 class="mt-6 text-2xl font-black tracking-[0.2em] uppercase text-white glow-text">Initialize System</h1>
+        <div class="w-48 h-1 bg-slate-800 rounded-full mt-4 overflow-hidden relative">
+            <div class="h-full bg-green-500 w-full rounded-full origin-left animate-[scaleX_1.5s_ease-in-out_forwards]"></div>
+        </div>
+        <style>@keyframes scaleX { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }</style>
+    </div>
+
+    <div class="max-w-3xl mx-auto w-full p-4 sm:p-6 lg:p-8 flex flex-col min-h-screen relative z-10 opacity-0 transition-opacity duration-1000" id="mainApp">
+        
+        <!-- Header -->
+        <header class="glass rounded-3xl p-8 mb-8 text-center animate-float relative overflow-hidden" style="animation-delay: 0.1s">
+            <div class="absolute top-0 right-0 p-4">
+                <button id="soundToggle" onclick="toggleSound()" class="p-2 bg-white/5 hover:bg-white/10 rounded-full transition-all group" title="Toggle Sound">
+                    <svg id="iconSoundOn" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400 group-hover:scale-110 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                    </svg>
+                    <svg id="iconSoundOff" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500 hidden group-hover:scale-110 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM12.293 7.293a1 1 0 011.414 0L15 8.586l1.293-1.293a1 1 0 111.414 1.414L16.414 10l1.293 1.293a1 1 0 01-1.414 1.414L15 11.414l-1.293 1.293a1 1 0 01-1.414-1.414L13.586 10l-1.293-1.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
             </div>
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-                WA TOOLS SUITE
+            
+            <div class="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/50 border border-green-500/30 mb-4 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                <span class="text-[10px] font-black text-green-400 tracking-[0.3em] uppercase">Level Max Edition</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-black tracking-tighter mb-3 bg-clip-text text-transparent bg-gradient-to-br from-white via-slate-200 to-slate-500">
+                WA TOOLS <span class="text-green-500">NEXUS</span>
             </h1>
-            <p class="text-slate-400 text-sm font-medium">Platform Manajemen Kontak & Generator Nomor Profesional</p>
+            <p class="text-slate-400 text-sm font-medium">Ultimate Engine for Data Generation & Processing</p>
         </header>
 
-        <!-- Navigation Bar -->
-        <nav class="glass-card rounded-2xl p-2 flex gap-2 mb-8 animate-slide-up" style="animation-delay: 0.1s">
-            <button onclick="switchTab('gen')" id="tabGen" class="nav-btn active flex-1 py-3 text-xs font-bold uppercase tracking-widest">Generator</button>
-            <button onclick="switchTab('check')" id="tabCheck" class="nav-btn flex-1 py-3 text-xs font-bold uppercase tracking-widest text-slate-500">Pemeriksa</button>
-            <button onclick="switchTab('save')" id="tabSave" class="nav-btn flex-1 py-3 text-xs font-bold uppercase tracking-widest text-slate-500">Simpan Kontak</button>
+        <!-- Dynamic Navigation -->
+        <nav class="glass rounded-2xl p-1.5 flex gap-1 mb-8 animate-float relative z-20" style="animation-delay: 0.2s">
+            <button onclick="switchTab('gen', this)" class="nav-btn flex-1 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white bg-white/10 rounded-xl shadow-lg">Generator</button>
+            <button onclick="switchTab('clean', this)" class="nav-btn flex-1 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-slate-500 rounded-xl hover:text-slate-300">Pembersih</button>
+            <button onclick="switchTab('save', this)" class="nav-btn flex-1 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-slate-500 rounded-xl hover:text-slate-300">VCF Export</button>
         </nav>
 
-        <!-- Main Workspace -->
-        <main class="animate-slide-up" style="animation-delay: 0.2s">
+        <!-- WORKSPACE -->
+        <main class="flex-grow animate-float relative z-10" style="animation-delay: 0.3s">
             
-            <!-- MODUL 1: GENERATOR -->
+            <!-- SECTION: GENERATOR -->
             <div id="sectionGen" class="space-y-6">
-                <div class="glass-card rounded-3xl p-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div class="md:col-span-2">
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block ml-1">Penyedia Layanan (Operator)</label>
-                            <select id="provider" class="custom-input w-full p-4 rounded-xl text-sm outline-none appearance-none cursor-pointer">
-                                <option value="random">Seluruh Operator Indonesia</option>
-                                <option value="811,812,813,821,822,823,852,853">Telkomsel (Halo, as, Simpati)</option>
-                                <option value="817,818,819,859,877,878">XL Axiata / AXIS</option>
-                                <option value="814,815,816,855,856,857,858">Indosat Ooredoo</option>
-                                <option value="895,896,897,898,899">Hutchison Three (3)</option>
-                                <option value="881,882,883,884,885,886,887,888">Smartfren</option>
+                <div class="glass rounded-3xl p-6 sm:p-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                        <div class="sm:col-span-2">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block ml-1 flex items-center gap-2">
+                                <svg class="w-3 h-3 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Target Operator
+                            </label>
+                            <select id="provider" class="premium-input w-full p-4 rounded-xl text-sm text-slate-200 font-semibold cursor-pointer" onmouseover="playHover()">
+                                <option value="random">⚡ Acak Seluruh Indonesia</option>
+                                <option value="811,812,813,821,822,823,852,853">🔴 Telkomsel</option>
+                                <option value="817,818,819,859,877,878,831,832,833,838">🔵 XL Axiata / AXIS</option>
+                                <option value="814,815,816,855,856,857,858">🟡 Indosat Ooredoo</option>
+                                <option value="895,896,897,898,899">⚫ Hutchison Three (3)</option>
+                                <option value="881,882,883,884,885,886,887,888">🟠 Smartfren</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block ml-1">Format Digit</label>
-                            <select id="digitLength" class="custom-input w-full p-4 rounded-xl text-sm outline-none">
-                                <option value="11">Minimalis (11 Digit)</option>
-                                <option value="12" selected>Standar (12 Digit)</option>
-                                <option value="13">Maksimal (13 Digit)</option>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block ml-1">Format Digit</label>
+                            <select id="digitLength" class="premium-input w-full p-4 rounded-xl text-sm text-slate-200 font-semibold cursor-pointer" onmouseover="playHover()">
+                                <option value="11">11 Digit (Pendek)</option>
+                                <option value="12" selected>12 Digit (Standar)</option>
+                                <option value="13">13 Digit (Panjang)</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block ml-1">Kuantitas Data</label>
-                            <input type="number" id="count" value="10" min="1" max="500" class="custom-input w-full p-4 rounded-xl text-sm outline-none">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block ml-1">Kuantitas</label>
+                            <input type="number" id="count" value="10" min="1" max="1000" class="premium-input w-full p-4 rounded-xl text-sm text-slate-200 font-mono font-bold" onmouseover="playHover()">
                         </div>
                     </div>
                     
-                    <button onclick="generateNumbers()" class="btn-primary w-full py-5 rounded-2xl font-bold text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
-                        </svg>
-                        Inisialisasi Generasi
+                    <button id="btnGen" onclick="handleGenerate()" class="btn-glow w-full py-5 rounded-2xl font-black text-sm uppercase tracking-[0.2em] text-white flex items-center justify-center gap-3" onmouseover="playHover()">
+                        <span id="btnGenText">Eksekusi Generasi</span>
+                        <svg id="btnGenIcon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
                     </button>
                 </div>
 
-                <!-- Hasil Output -->
-                <div id="resultsContainer" class="hidden glass-card rounded-3xl p-8 transition-all duration-500 overflow-hidden">
-                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6 border-b border-white/5 pb-6">
-                        <div class="text-left w-full md:w-auto">
-                            <h3 class="text-lg font-bold">Log Hasil Generasi</h3>
-                            <p class="text-xs text-slate-500 font-medium">Data siap diproses lebih lanjut</p>
+                <div id="resultsContainer" class="hidden glass rounded-3xl p-6 sm:p-8">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <div>
+                            <h3 class="text-sm font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">Output Data</h3>
+                            <p class="text-[10px] text-slate-500 font-medium mt-1">Siap diproses lebih lanjut</p>
                         </div>
-                        <div class="flex gap-2 w-full md:w-auto">
-                            <button onclick="copyAllNumbers('link')" class="flex-1 md:flex-none px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-bold tracking-tighter transition-all">SALIN LINK</button>
-                            <button onclick="copyAllNumbers('number')" class="flex-1 md:flex-none px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-[10px] font-bold tracking-tighter transition-all">SALIN NOMOR</button>
+                        <div class="flex gap-2 w-full sm:w-auto bg-slate-900/50 p-1 rounded-xl border border-white/5">
+                            <button onclick="copyAllNumbers('link')" class="flex-1 px-4 py-2 bg-transparent hover:bg-white/10 rounded-lg text-[10px] font-bold transition-all text-slate-300" onmouseover="playHover()">COPY LINK</button>
+                            <button onclick="copyAllNumbers('number')" class="flex-1 px-4 py-2 bg-green-500/20 text-green-400 hover:bg-green-500 hover:text-white rounded-lg text-[10px] font-bold transition-all" onmouseover="playHover()">COPY NO</button>
                         </div>
                     </div>
-                    <div id="resultsList" class="grid grid-cols-1 gap-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar"></div>
+                    <div id="resultsList" class="grid grid-cols-1 gap-2 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar"></div>
                 </div>
             </div>
 
-            <!-- MODUL 2: PEMERIKSA (OPENER) -->
-            <div id="sectionCheck" class="hidden space-y-6">
-                <div class="glass-card rounded-3xl p-8">
-                    <h3 class="text-xl font-extrabold mb-2">Pemeriksa Validitas Link</h3>
-                    <p class="text-xs text-slate-400 mb-6">Tempelkan daftar nomor atau tautan wa.me di bawah ini untuk verifikasi manual cepat.</p>
-                    
-                    <textarea id="checkInput" rows="10" placeholder="Contoh format input:&#10;+6281234567890&#10;085712345678&#10;https://wa.me/6289512345678" class="custom-input w-full p-5 rounded-2xl text-sm font-mono mb-6 outline-none focus:ring-0 custom-scrollbar"></textarea>
-                    
-                    <div class="flex items-start gap-4 p-5 bg-blue-500/10 border border-blue-500/20 rounded-2xl mb-8">
-                        <div class="mt-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                            </svg>
+            <!-- SECTION: CLEANER -->
+            <div id="sectionClean" class="hidden space-y-6">
+                <div class="glass rounded-3xl p-6 sm:p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-3 bg-blue-500/20 rounded-xl"><svg class="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg></div>
+                        <div>
+                            <h3 class="text-lg font-black uppercase tracking-wider text-slate-200">Data Extraction</h3>
+                            <p class="text-[10px] text-slate-400 font-medium">Saring teks mentah menjadi nomor murni</p>
                         </div>
-                        <p class="text-[11px] text-blue-300 leading-relaxed font-medium">
-                            <span class="block font-bold text-blue-200 mb-1">Catatan Penting:</span>
-                            Sistem akan mengeksekusi pembukaan tab baru secara berurutan. Pastikan pengaturan peramban (browser) Anda telah mengizinkan jendela sembulan (pop-ups). Disarankan untuk memproses maksimal 20 data per sesi.
-                        </p>
+                    </div>
+                    
+                    <textarea id="cleanInput" rows="8" placeholder="[Paste teks mentah log chat/grup di sini...]" class="premium-input w-full p-5 rounded-2xl text-xs font-mono text-slate-300 mb-6 custom-scrollbar"></textarea>
+                    
+                    <div id="cleanOutputContainer" class="hidden mb-6 animate-pop">
+                        <div class="flex justify-between items-center mb-3 bg-green-500/10 p-3 rounded-xl border border-green-500/20">
+                            <span class="text-[10px] font-bold text-green-400 uppercase tracking-widest flex items-center gap-2">
+                                <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span></span>
+                                Terdeteksi: <span id="cleanCount" class="text-white text-sm">0</span>
+                            </span>
+                            <button onclick="transferToSave()" class="text-[10px] bg-green-500 hover:bg-green-600 text-white px-4 py-1.5 rounded-lg font-bold transition-all uppercase tracking-wider shadow-[0_0_10px_rgba(34,197,94,0.3)]" onmouseover="playHover()">Export ke VCF →</button>
+                        </div>
+                        <textarea id="cleanOutput" rows="5" readonly class="premium-input w-full p-5 rounded-2xl text-xs font-mono text-green-400 custom-scrollbar focus:ring-0 cursor-text"></textarea>
                     </div>
 
-                    <button onclick="bulkCheck()" class="btn-primary w-full py-5 rounded-2xl font-bold text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-3">
-                        Eksekusi Verifikasi
+                    <button id="btnClean" onclick="handleClean()" class="btn-glow w-full py-5 rounded-2xl font-black text-sm uppercase tracking-[0.2em] text-white flex items-center justify-center gap-3" onmouseover="playHover()">
+                        <span id="btnCleanText">Proses Ekstraksi</span>
                     </button>
                 </div>
             </div>
 
-            <!-- MODUL 3: SIMPAN KONTAK -->
+            <!-- SECTION: VCF EXPORT -->
             <div id="sectionSave" class="hidden space-y-6">
-                <div class="glass-card rounded-3xl p-8">
-                    <h3 class="text-xl font-extrabold mb-2">Generator Berkas Kontak (.VCF)</h3>
-                    <p class="text-xs text-slate-400 mb-8">Konversi daftar nomor menjadi format kartu nama virtual untuk impor massal ke perangkat seluler.</p>
+                <div class="glass rounded-3xl p-6 sm:p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-3 bg-amber-500/20 rounded-xl"><svg class="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+                        <div>
+                            <h3 class="text-lg font-black uppercase tracking-wider text-slate-200">VCF Generator</h3>
+                            <p class="text-[10px] text-slate-400 font-medium">Buat file .vcf untuk sinkronisasi kontak masal</p>
+                        </div>
+                    </div>
                     
                     <div class="space-y-6">
                         <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block ml-1">Identitas Dasar Kontak (Prefix Name)</label>
-                            <input type="text" id="contactName" placeholder="Contoh: Prospek_Mei, Client_JKT" class="custom-input w-full p-4 rounded-xl text-sm font-bold outline-none">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block ml-1">Identitas Kontak (Prefix Name)</label>
+                            <input type="text" id="contactName" placeholder="Contoh: Database_Baru" class="premium-input w-full p-4 rounded-xl text-sm font-bold text-white placeholder-slate-600">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block ml-1">Daftar Nomor Target</label>
-                            <textarea id="saveInput" rows="6" placeholder="Masukkan seluruh nomor yang ingin dikonversi..." class="custom-input w-full p-4 rounded-xl text-sm font-mono outline-none custom-scrollbar"></textarea>
-                        </div>
-                        
-                        <div class="p-5 bg-green-500/10 border border-green-500/20 rounded-2xl mb-2">
-                            <p class="text-[11px] text-green-300 leading-relaxed font-medium">
-                                <span class="block font-bold text-green-200 mb-1">Instruksi Penggunaan:</span>
-                                Unduh berkas hasil konversi, kemudian kirim atau buka langsung pada ponsel cerdas Anda. Sistem operasi akan mendeteksi berkas VCF dan menawarkan opsi sinkronisasi kontak secara otomatis.
-                            </p>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 block ml-1 flex justify-between">
+                                Daftar Nomor Bersih
+                                <span class="text-green-500 font-normal italic">Siap diproses</span>
+                            </label>
+                            <textarea id="saveInput" rows="6" placeholder="Masukkan nomor (satu per baris)..." class="premium-input w-full p-4 rounded-xl text-xs font-mono text-slate-300 custom-scrollbar"></textarea>
                         </div>
 
-                        <button onclick="generateVCF()" class="btn-primary w-full py-5 rounded-2xl font-extrabold text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-3">
-                            Unduh Berkas VCF
+                        <button id="btnVcf" onclick="handleVCF()" class="btn-glow w-full py-5 rounded-2xl font-black text-sm uppercase tracking-[0.2em] text-white flex items-center justify-center gap-3" onmouseover="playHover()">
+                            <span id="btnVcfText">Unduh File Kontak</span>
+                            <svg id="btnVcfIcon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Empty State Helper -->
-            <div id="initialState" class="text-center py-24 opacity-50">
-                <div class="mb-4 flex justify-center">
-                    <div class="p-6 bg-slate-800 rounded-full border border-slate-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                </div>
-                <h2 class="text-xl font-bold text-slate-400 tracking-tight italic">Menunggu Interaksi Pengguna...</h2>
-                <p class="text-slate-600 text-xs mt-2 font-medium">Pilih salah satu fungsi pada navigasi untuk memulai operasional.</p>
-            </div>
-
         </main>
 
-        <!-- Footer -->
-        <footer class="mt-12 text-center border-t border-white/5 pt-8 mb-10">
-            <p class="text-[10px] text-slate-600 font-bold uppercase tracking-[0.4em]">Designed for Elite Performance</p>
-            <p class="text-slate-700 text-[10px] mt-2 italic">© 2024 Advanced WhatsApp Solution. Hak Cipta Dilindungi.</p>
+        <footer class="mt-8 text-center opacity-50 hover:opacity-100 transition-opacity">
+            <p class="text-[9px] text-slate-400 font-black uppercase tracking-[0.5em]">NEXUS ENGINE vMAX • 2024</p>
         </footer>
 
-        <!-- Toast Notification -->
-        <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-white text-slate-900 px-8 py-4 rounded-2xl text-xs font-extrabold shadow-2xl opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-3">
-            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span id="toastMsg">Operasi Berhasil</span>
+        <!-- Dynamic Toast -->
+        <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-slate-800 border border-slate-600 text-white px-6 py-3 rounded-full text-xs font-bold shadow-[0_10px_30px_rgba(0,0,0,0.5)] opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-3 scale-90">
+            <div id="toastDot" class="w-2 h-2 bg-green-500 rounded-full shadow-[0_0_8px_#22c55e]"></div>
+            <span id="toastMsg" class="tracking-wide">System Ready</span>
         </div>
 
     </div>
 
     <script>
+        // --- AUDIO ENGINE (WEB AUDIO API) ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+        let isMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new AudioContext();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function toggleSound() {
+            isMuted = !isMuted;
+            document.getElementById('iconSoundOn').classList.toggle('hidden', isMuted);
+            document.getElementById('iconSoundOff').classList.toggle('hidden', !isMuted);
+            if(!isMuted) playClick();
+        }
+
+        function playTone(freq, type, duration, vol=0.05) {
+            if (isMuted) return;
+            initAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        const playHover = () => playTone(800, 'sine', 0.05, 0.01);
+        const playClick = () => playTone(400, 'triangle', 0.1, 0.03);
+        const playSuccess = () => {
+            playTone(523.25, 'sine', 0.1, 0.03); 
+            setTimeout(() => playTone(659.25, 'sine', 0.2, 0.04), 100);
+            setTimeout(() => playTone(783.99, 'sine', 0.3, 0.05), 200);
+        };
+        const playError = () => playTone(150, 'sawtooth', 0.3, 0.03);
+
+        // Auto init audio on first user interaction
+        document.body.addEventListener('click', initAudio, { once: true });
+
+
+        // --- UI & LOGIC ENGINE ---
         let currentNumbers = [];
 
-        function switchTab(tab) {
-            const sections = ['sectionGen', 'sectionCheck', 'sectionSave'];
-            const tabs = ['tabGen', 'tabCheck', 'tabSave'];
-            
+        // Startup Sequence
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('startupScreen').style.opacity = '0';
+                document.getElementById('startupScreen').style.visibility = 'hidden';
+                document.getElementById('mainApp').style.opacity = '1';
+                setTimeout(playSuccess, 300);
+            }, 1500); // 1.5s booting
+        };
+
+        function switchTab(tab, btn) {
+            playClick();
+            const sections = ['sectionGen', 'sectionClean', 'sectionSave'];
             sections.forEach(s => document.getElementById(s).classList.add('hidden'));
-            tabs.forEach(t => {
-                document.getElementById(t).classList.remove('active');
-                document.getElementById(t).classList.add('text-slate-500');
+            
+            // Reset nav buttons
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('bg-white/10', 'text-white', 'shadow-lg');
+                b.classList.add('text-slate-500');
             });
 
+            // Activate target
             const activeSec = 'section' + tab.charAt(0).toUpperCase() + tab.slice(1);
-            const activeTab = 'tab' + tab.charAt(0).toUpperCase() + tab.slice(1);
-            
             document.getElementById(activeSec).classList.remove('hidden');
-            document.getElementById(activeTab).classList.add('active');
-            document.getElementById(activeTab).classList.remove('text-slate-500');
             
-            document.getElementById('initialState').classList.add('hidden');
+            // Re-trigger animation
+            const el = document.getElementById(activeSec);
+            el.classList.remove('animate-float');
+            void el.offsetWidth; // trigger reflow
+            el.classList.add('animate-float');
+
+            btn.classList.add('bg-white/10', 'text-white', 'shadow-lg');
+            btn.classList.remove('text-slate-500');
         }
 
-        function generateNumbers() {
-            const providerVal = document.getElementById('provider').value;
-            const digitLen = parseInt(document.getElementById('digitLength').value);
-            const count = parseInt(document.getElementById('count').value);
-            const listElement = document.getElementById('resultsList');
+        // Faux Loading Wrapper
+        function withLoading(btnId, textId, originalText, iconId, logicCallback) {
+            playClick();
+            const btn = document.getElementById(btnId);
+            const textEl = document.getElementById(textId);
+            const iconEl = document.getElementById(iconId);
             
-            const prefixes = providerVal === 'random' 
-                ? ['811','812','813','821','822','817','818','814','815','895','896','881','882']
-                : providerVal.split(',');
-
-            listElement.innerHTML = '';
-            currentNumbers = [];
-
-            for(let i=0; i < count; i++) {
-                const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-                let suffix = '';
-                const suffixLen = digitLen - 5; 
-                
-                for(let j=0; j < suffixLen; j++) suffix += Math.floor(Math.random() * 10);
-
-                const fullNumber = '62' + prefix + suffix;
-                currentNumbers.push(fullNumber);
-
-                const div = document.createElement('div');
-                div.className = "flex items-center justify-between p-4 bg-slate-900/40 border border-white/5 rounded-2xl hover:border-green-500/30 transition-all group animate-slide-up";
-                div.style.animationDelay = (i * 0.05) + 's';
-                div.innerHTML = `
-                    <div class="flex items-center gap-4">
-                        <span class="text-[10px] font-black text-slate-700 tracking-tighter w-4">${i+1}</span>
-                        <div class="h-8 w-[2px] bg-green-500/20 group-hover:bg-green-500 transition-colors"></div>
-                        <span class="text-sm font-mono font-bold text-slate-200 tracking-wider">+62 ${prefix}-${suffix}</span>
-                    </div>
-                    <div class="flex gap-2">
-                         <button onclick="copyToClipboard('+${fullNumber}')" class="p-2.5 bg-white/5 text-slate-400 rounded-xl hover:text-white hover:bg-white/10 transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                            </svg>
-                        </button>
-                        <a href="https://wa.me/${fullNumber}" target="_blank" class="flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-400 text-[10px] rounded-xl font-black border border-green-500/20 hover:bg-green-500 hover:text-white transition-all">VERIFIKASI</a>
-                    </div>
-                `;
-                listElement.appendChild(div);
+            // Loading state
+            btn.classList.add('opacity-80', 'pointer-events-none');
+            textEl.innerText = "Processing...";
+            if(iconEl) {
+                iconEl.outerHTML = `<div id="${iconId}" class="loader"></div>`;
             }
-            document.getElementById('resultsContainer').classList.remove('hidden');
-            showToast(`Berhasil Memproses ${count} Entitas`);
-        }
 
-        function bulkCheck() {
-            const input = document.getElementById('checkInput').value;
-            const items = input.split('\n').filter(i => i.trim() !== "");
-            if(items.length === 0) return showToast("Antrean data kosong!");
-
-            items.forEach((item, index) => {
-                let clean = item.replace(/\D/g, '');
-                if(clean.startsWith('08')) clean = '62' + clean.substring(1);
-                if(item.includes('wa.me/')) clean = item.split('wa.me/')[1].replace(/\D/g, '');
-
-                if(clean.length >= 10) {
-                    setTimeout(() => window.open(`https://wa.me/${clean}`, '_blank'), index * 1000);
-                }
-            });
-            showToast(`Mengeksekusi ${items.length} Jalur Verifikasi`);
-        }
-
-        function generateVCF() {
-            const baseName = document.getElementById('contactName').value.trim() || 'WA_CONTACT';
-            const input = document.getElementById('saveInput').value;
-            const lines = input.split('\n').filter(l => l.trim() !== "");
-            
-            let vcf = "";
-            let counter = 0;
-
-            lines.forEach(line => {
-                let clean = line.replace(/\D/g, '');
-                if(clean.startsWith('08')) clean = '62' + clean.substring(1);
+            setTimeout(() => {
+                const isSuccess = logicCallback();
                 
-                if(clean.length >= 10) {
-                    counter++;
-                    vcf += `BEGIN:VCARD\nVERSION:3.0\nFN:${baseName} [${counter}]\nTEL;TYPE=CELL:+${clean}\nEND:VCARD\n`;
+                // Restore state
+                btn.classList.remove('opacity-80', 'pointer-events-none');
+                textEl.innerText = originalText;
+                
+                if(document.getElementById(iconId)) {
+                    if(btnId === 'btnGen') {
+                        document.getElementById(iconId).outerHTML = `<svg id="btnGenIcon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>`;
+                    } else if (btnId === 'btnVcf') {
+                        document.getElementById(iconId).outerHTML = `<svg id="btnVcfIcon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>`;
+                    }
                 }
+
+                if(isSuccess) playSuccess(); else playError();
+            }, 800); // 800ms dramatic delay
+        }
+
+        function handleGenerate() {
+            withLoading('btnGen', 'btnGenText', 'Eksekusi Generasi', 'btnGenIcon', () => {
+                const providerVal = document.getElementById('provider').value;
+                const digitLen = parseInt(document.getElementById('digitLength').value);
+                const count = parseInt(document.getElementById('count').value);
+                const listElement = document.getElementById('resultsList');
+                
+                const prefixes = providerVal === 'random' 
+                    ? ['811','812','813','821','822','817','818','831','838','857','895','896','881']
+                    : providerVal.split(',');
+
+                listElement.innerHTML = '';
+                currentNumbers = [];
+
+                for(let i=0; i < count; i++) {
+                    const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+                    let suffix = '';
+                    for(let j=0; j < (digitLen - 5); j++) suffix += Math.floor(Math.random() * 10);
+                    const fullNumber = '62' + prefix + suffix;
+                    currentNumbers.push(fullNumber);
+
+                    const div = document.createElement('div');
+                    div.className = "flex items-center justify-between p-3.5 bg-slate-900/40 border border-white/5 rounded-2xl hover:bg-slate-800/80 transition-all group animate-pop opacity-0";
+                    div.style.animationDelay = (i * 0.03) + 's';
+                    div.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <span class="text-[9px] font-black text-slate-600 tracking-tighter w-4">${i+1}</span>
+                            <div class="h-6 w-[2px] bg-green-500/20 group-hover:bg-green-500 transition-colors"></div>
+                            <span class="text-sm font-mono font-bold text-slate-200 tracking-widest">+62 ${prefix}-${suffix}</span>
+                        </div>
+                        <button onclick="copyToClipboard('+${fullNumber}')" class="p-2 bg-white/5 text-slate-400 rounded-lg hover:text-white hover:bg-white/10 transition-all shadow-sm" onmouseover="playHover()">
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" /></svg>
+                        </button>
+                    `;
+                    listElement.appendChild(div);
+                }
+                document.getElementById('resultsContainer').classList.remove('hidden');
+                showToast(`SUCCESS: ${count} Data Generated`, 'success');
+                return true;
             });
+        }
 
-            if(counter === 0) return showToast("Gagal: Data tidak memadai!");
+        function handleClean() {
+            withLoading('btnClean', 'btnCleanText', 'Proses Ekstraksi', null, () => {
+                const input = document.getElementById('cleanInput').value;
+                const phoneRegex = /(\+?62|0)8[0-9\-\s]{7,15}/g;
+                const matches = input.match(phoneRegex);
 
-            const blob = new Blob([vcf], { type: 'text/vcard' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = `${baseName}_EXPORT_ULTIMATE.vcf`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showToast(`Arsip VCF Berhasil Diterbitkan`);
+                if (!matches) {
+                    showToast("ERROR: Tidak ada data valid!", 'error');
+                    return false;
+                }
+
+                const cleaned = [...new Set(matches)].map(num => {
+                    let n = num.replace(/\D/g, ''); 
+                    if (n.startsWith('08')) n = '62' + n.slice(1);
+                    if (n.startsWith('8')) n = '62' + n; 
+                    return n;
+                }).filter(n => n.length >= 10 && n.length <= 15);
+
+                document.getElementById('cleanOutput').value = cleaned.join('\n');
+                document.getElementById('cleanCount').innerText = cleaned.length;
+                document.getElementById('cleanOutputContainer').classList.remove('hidden');
+                showToast(`EXTRACTED: ${cleaned.length} Unik`, 'success');
+                return true;
+            });
+        }
+
+        function transferToSave() {
+            playClick();
+            const cleanedData = document.getElementById('cleanOutput').value;
+            if(!cleanedData) return;
+            document.getElementById('saveInput').value = cleanedData;
+            switchTab('save', document.querySelectorAll('.nav-btn')[2]);
+            showToast("DATA TRANSFERRED", 'success');
+        }
+
+        function handleVCF() {
+            withLoading('btnVcf', 'btnVcfText', 'Unduh File Kontak', 'btnVcfIcon', () => {
+                const baseName = document.getElementById('contactName').value.trim() || 'NEXUS_TARGET';
+                const input = document.getElementById('saveInput').value;
+                const lines = input.split('\n').filter(l => l.trim() !== "");
+                
+                let vcf = "";
+                let counter = 0;
+
+                lines.forEach(line => {
+                    let clean = line.replace(/\D/g, '');
+                    if(clean.startsWith('08')) clean = '62' + clean.substring(1);
+                    if(clean.length >= 10) {
+                        counter++;
+                        vcf += `BEGIN:VCARD\nVERSION:3.0\nFN:${baseName} [${counter}]\nTEL;TYPE=CELL:+${clean}\nEND:VCARD\n`;
+                    }
+                });
+
+                if(counter === 0) {
+                    showToast("ERROR: Data kosong", 'error');
+                    return false;
+                }
+
+                const blob = new Blob([vcf], { type: 'text/vcard' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = `${baseName}_VMAX.vcf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast(`DOWNLOADED: ${counter} Kontak`, 'success');
+                return true;
+            });
         }
 
         function copyAllNumbers(type) {
+            playClick();
             if(currentNumbers.length === 0) return;
             const text = type === 'link' 
                 ? currentNumbers.map(n => `https://wa.me/${n}`).join('\n')
                 : currentNumbers.map(n => `+${n}`).join('\n');
-            
+            copyToClipboard(text, "COPIED: Batch Data");
+        }
+
+        function copyToClipboard(text, customMsg) {
+            playClick();
             const temp = document.createElement('textarea');
             temp.value = text;
             document.body.appendChild(temp);
             temp.select();
             document.execCommand('copy');
             document.body.removeChild(temp);
-            showToast(`Batch Data Berhasil Disalin`);
+            showToast(customMsg || "COPIED TO CLIPBOARD", 'success');
         }
 
-        function copyToClipboard(text) {
-            const temp = document.createElement('textarea');
-            temp.value = text;
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand('copy');
-            document.body.removeChild(temp);
-            showToast("Unit Terpilih Telah Disalin");
-        }
-
-        function showToast(msg) {
+        function showToast(msg, type='success') {
             const t = document.getElementById('toast');
+            const dot = document.getElementById('toastDot');
+            
             document.getElementById('toastMsg').innerText = msg;
-            t.classList.remove('opacity-0', 'translate-y-10');
-            t.classList.add('opacity-100', 'translate-y-0');
-            setTimeout(() => {
-                t.classList.add('opacity-0', 'translate-y-10');
-                t.classList.remove('opacity-100', 'translate-y-0');
-            }, 3000);
+            
+            if(type === 'error') {
+                dot.className = "w-2 h-2 bg-red-500 rounded-full shadow-[0_0_8px_#ef4444]";
+                t.style.border = "1px solid rgba(239, 68, 68, 0.3)";
+            } else {
+                dot.className = "w-2 h-2 bg-green-500 rounded-full shadow-[0_0_8px_#22c55e]";
+                t.style.border = "1px solid rgba(34, 197, 94, 0.3)";
+            }
+
+            t.classList.remove('opacity-0', 'scale-90', 'translate-y-4');
+            t.classList.add('opacity-100', 'scale-100', 'translate-y-0');
+            
+            // Clear existing timeout to prevent flickering if clicked multiple times
+            if(window.toastTimeout) clearTimeout(window.toastTimeout);
+            
+            window.toastTimeout = setTimeout(() => {
+                t.classList.add('opacity-0', 'scale-90', 'translate-y-4');
+                t.classList.remove('opacity-100', 'scale-100', 'translate-y-0');
+            }, 2500);
         }
     </script>
 </body>
