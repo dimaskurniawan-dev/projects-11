@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WA Number Generator & Checker Indo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .wa-green {
+            background-color: #25D366;
+        }
+        .wa-dark {
+            background-color: #075E54;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+        }
+        .tab-active {
+            border-bottom: 3px solid #25D366;
+            color: #25D366;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <!-- Header -->
+        <div class="wa-dark p-8 text-white text-center relative">
+            <div class="absolute top-4 right-4 bg-green-500 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Ultimate Version</div>
+            <h1 class="text-3xl font-black tracking-tight">WA GEN & CHECKER</h1>
+            <p class="text-sm opacity-80 mt-1">Generate & Fast-Check Nomor WhatsApp Indonesia</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-100">
+            <button onclick="switchTab('gen')" id="tabGen" class="flex-1 py-4 font-bold text-sm uppercase tracking-wider tab-active transition-all">Generator</button>
+            <button onclick="switchTab('check')" id="tabCheck" class="flex-1 py-4 font-bold text-sm uppercase tracking-wider text-gray-400 hover:text-gray-600 transition-all">Link Opener (Checker)</button>
+        </div>
+
+        <div class="p-6 md:p-8">
+            <!-- SECTION GENERATOR -->
+            <div id="sectionGen">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Provider</label>
+                        <select id="provider" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm">
+                            <option value="random">Semua Operator</option>
+                            <option value="811,812,813,821,822,823,852,853">Telkomsel</option>
+                            <option value="817,818,819,859,877,878">XL Axiata</option>
+                            <option value="814,815,816,855,856,857,858">Indosat</option>
+                            <option value="895,896,897,898,899">Three (3)</option>
+                            <option value="881,882,883,884,885,886,887,888">Smartfren</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Panjang</label>
+                        <select id="digitLength" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm">
+                            <option value="random">Acak</option>
+                            <option value="11">11 Digit</option>
+                            <option value="12" selected>12 Digit</option>
+                            <option value="13">13 Digit</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Jumlah</label>
+                        <input type="number" id="count" value="10" min="1" max="100" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm">
+                    </div>
+                </div>
+
+                <button onclick="generateNumbers()" class="w-full wa-green hover:bg-green-600 text-white font-bold py-4 px-4 rounded-xl shadow-lg shadow-green-200 transition duration-300 transform active:scale-[0.98] flex items-center justify-center gap-3 mb-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <span class="text-lg">Generate Nomor</span>
+                </button>
+
+                <!-- Hasil -->
+                <div id="resultsContainer" class="hidden animate-in fade-in duration-500">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-3 border-b pb-4 border-gray-100">
+                        <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
+                            <span class="w-2 h-6 wa-green rounded-full"></span>
+                            Hasil List
+                        </h3>
+                        <div class="flex gap-2">
+                            <button onclick="copyAllNumbers('link')" class="flex-1 md:flex-none text-[11px] font-bold text-blue-600 hover:text-blue-700 flex items-center justify-center gap-1 bg-blue-50 px-3 py-2 rounded-lg transition-colors">
+                                Salin Link WA
+                            </button>
+                            <button onclick="copyAllNumbers('number')" class="flex-1 md:flex-none text-[11px] font-bold text-green-600 hover:text-green-700 flex items-center justify-center gap-1 bg-green-50 px-3 py-2 rounded-lg transition-colors">
+                                Salin Nomor (+)
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="resultsList" class="space-y-3 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Nomor muncul di sini -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION CHECKER -->
+            <div id="sectionCheck" class="hidden animate-in slide-in-from-right duration-300">
+                <div class="mb-4">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Paste List Nomor / Link WA di sini</label>
+                    <textarea id="checkInput" rows="8" placeholder="Contoh:&#10;+62812345678&#10;62857123456&#10;https://wa.me/62895123456" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm font-mono custom-scrollbar"></textarea>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-6">
+                    <p class="text-xs text-blue-700 leading-relaxed">
+                        <strong>Info:</strong> Fitur ini akan membuka tab baru untuk setiap nomor. Pastikan browser kamu mengizinkan <b>"Pop-ups"</b>. Disarankan buka maksimal 10-20 nomor sekali klik agar tidak lag.
+                    </p>
+                </div>
+
+                <button onclick="bulkCheck()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-xl shadow-lg shadow-blue-200 transition duration-300 transform active:scale-[0.98] flex items-center justify-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <span class="text-lg">Buka Semua di Tab Baru</span>
+                </button>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                <div class="text-gray-300 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <p class="text-gray-500 font-medium">Belum ada aktivitas</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-gray-50 p-6 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">Status Sistem</p>
+                <div class="flex items-center gap-2 text-xs text-green-600 font-medium">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    Operasional Normal
+                </div>
+            </div>
+            <p class="text-[10px] text-gray-400 text-center md:text-right max-w-[250px]">
+                Fitur Opener membantu mempercepat pengecekan manual tanpa melanggar kebijakan API.
+            </p>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full text-sm font-bold shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none z-50">
+        Disalin ke papan klip!
+    </div>
+
+    <script>
+        let currentNumbers = [];
+
+        function switchTab(tab) {
+            const sectionGen = document.getElementById('sectionGen');
+            const sectionCheck = document.getElementById('sectionCheck');
+            const tabGen = document.getElementById('tabGen');
+            const tabCheck = document.getElementById('tabCheck');
+
+            if (tab === 'gen') {
+                sectionGen.classList.remove('hidden');
+                sectionCheck.classList.add('hidden');
+                tabGen.classList.add('tab-active');
+                tabCheck.classList.remove('tab-active');
+                tabCheck.classList.add('text-gray-400');
+            } else {
+                sectionGen.classList.add('hidden');
+                sectionCheck.classList.remove('hidden');
+                tabCheck.classList.add('tab-active');
+                tabCheck.classList.remove('text-gray-400');
+                tabGen.classList.remove('tab-active');
+                tabGen.classList.add('text-gray-400');
+                document.getElementById('emptyState').classList.add('hidden');
+            }
+        }
+
+        function generateNumbers() {
+            const providerVal = document.getElementById('provider').value;
+            const digitLen = document.getElementById('digitLength').value;
+            const count = parseInt(document.getElementById('count').value);
+            const resultsList = document.getElementById('resultsList');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            const allPrefixes = [
+                '811', '812', '813', '821', '822', '823', '852', '853',
+                '817', '818', '819', '859', '877', '878',
+                '814', '815', '816', '855', '856', '857', '858',
+                '895', '896', '897', '898', '899',
+                '881', '882', '883', '884', '885', '886', '887', '888'
+            ];
+
+            let selectedPrefixes = providerVal === 'random' ? allPrefixes : providerVal.split(',');
+
+            resultsList.innerHTML = '';
+            currentNumbers = [];
+            
+            for (let i = 0; i < count; i++) {
+                const prefix = selectedPrefixes[Math.floor(Math.random() * selectedPrefixes.length)];
+                let suffixLen = digitLen === 'random' ? Math.floor(Math.random() * 3) + 7 : parseInt(digitLen) - 5;
+
+                let suffix = '';
+                for (let j = 0; j < suffixLen; j++) {
+                    suffix += Math.floor(Math.random() * 10);
+                }
+
+                const fullNumber = '62' + prefix + suffix;
+                currentNumbers.push(fullNumber);
+                const displayFormat = '+62 ' + prefix + '-' + suffix;
+
+                const card = document.createElement('div');
+                card.className = "flex items-center justify-between p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md hover:border-green-200 transition-all";
+                card.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600 font-bold text-[10px]">
+                            ${i+1}
+                        </div>
+                        <div>
+                            <span class="text-sm font-mono font-bold text-gray-800">${displayFormat}</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                         <button onclick="copyToClipboard('+${fullNumber}')" class="p-2 bg-gray-50 text-gray-500 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                            </svg>
+                        </button>
+                        <a href="https://wa.me/${fullNumber}" target="_blank" class="flex items-center gap-2 px-3 py-1.5 wa-green text-white text-[11px] rounded-lg hover:bg-green-600 font-bold transition-all">
+                            Cek
+                        </a>
+                    </div>
+                `;
+                resultsList.appendChild(card);
+            }
+
+            resultsContainer.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+        }
+
+        function bulkCheck() {
+            const input = document.getElementById('checkInput').value;
+            if (!input.trim()) return showToast('Input kosong, Bang!');
+
+            // Regex buat nyari angka doang dari baris yang diinput
+            const lines = input.split('\n');
+            let count = 0;
+
+            lines.forEach((line, index) => {
+                if (!line.trim()) return;
+
+                // Bersihin nomor dari karakter non-digit, ambil yang depannya 62 atau 08 (ubah ke 62)
+                let cleanNum = line.replace(/\D/g, '');
+                if (cleanNum.startsWith('08')) {
+                    cleanNum = '62' + cleanNum.substring(1);
+                }
+                
+                // Kalau formatnya udah wa.me, ambil bagian belakangnya aja
+                if (line.includes('wa.me/')) {
+                    cleanNum = line.split('wa.me/')[1].replace(/\D/g, '');
+                }
+
+                if (cleanNum.length >= 10) {
+                    count++;
+                    // Kasih delay dikit biar browser gak blokir pop-up sekaligus
+                    setTimeout(() => {
+                        window.open(`https://wa.me/${cleanNum}`, '_blank');
+                    }, index * 800); 
+                }
+            });
+
+            if (count > 0) {
+                showToast(`Membuka ${count} nomor...`);
+            } else {
+                showToast('Format nomor tidak dikenali');
+            }
+        }
+
+        function copyToClipboard(text) {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast('Disalin: ' + text);
+        }
+
+        function copyAllNumbers(type) {
+            if (currentNumbers.length === 0) return;
+            let textToCopy = type === 'link' 
+                ? currentNumbers.map(num => `https://wa.me/${num}`).join('\n')
+                : currentNumbers.map(num => `+${num}`).join('\n');
+            
+            const el = document.createElement('textarea');
+            el.value = textToCopy;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast(`${currentNumbers.length} data disalin!`);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.remove('opacity-0');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
